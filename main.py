@@ -46,7 +46,7 @@ clockDisplayStream =  ticks.map(lambda x: showClock)
 
 syncAnimStream = ticks.map(lambda x: showSyncAnim)
 
-truthfulClockStream = Observable.concat(syncAnimStream.take_while(time_needs_sync), clockDisplayStream)
+truthfulClockStream = Observable.concat(syncAnimStream.take_while(lambda x : time_needs_sync()), clockDisplayStream)
 
 buttonPressSubject = Subject()
 
