@@ -32,7 +32,7 @@ def octoalert_pressed(channel):
 def time_needs_sync():
     return subprocess.check_output(['ntpq', '-c', 'rv 0 reftime']).startswith('reftime=0000')
 
-ticks = Observable.interval(5)
+ticks = Observable.interval(100)
 
 def showClock(disp):
     timeText = strftime("%H%M")
