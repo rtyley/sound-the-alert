@@ -7,6 +7,12 @@ import subprocess
 
 import RPi.GPIO as GPIO
 from rx.subjects import Subject
+from rx import Observable, Observer
+
+import time
+from time import strftime
+from Adafruit_LED_Backpack import AlphaNum4
+import os.path
 
 GPIO.setmode(GPIO.BCM)
 
@@ -26,38 +32,32 @@ def octoalert_pressed(channel):
 def time_needs_sync():
     return subprocess.check_output(['ntpq', '-c', 'rv 0 reftime']).startswith('reftime=0000')
 
+ticks = Observable.interval(5)
+
+def showClock(disp):
+    timeText = strftime("%H%M")
+    disp.print_str(timeText)
+    disp.set_decimal(1, int(time.time()) % 2)
+
+
 buttonPressSubject = Subject()
 
 GPIO.add_event_detect(25, GPIO.FALLING, callback=buttonPressSubject.on_next, bouncetime=500)
 
 buttonPressSubscription = buttonPressSubject.subscribe(lambda x: octoalert_pressed(x))
 
-import time
-from time import strftime
-from Adafruit_LED_Backpack import AlphaNum4
-import os.path
-
 display = AlphaNum4.AlphaNum4()
 
 display.begin()
 
-pos = 0
+displaySubscription = ticks.map(lambda x: showClock).subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
 
-while True:
+def renderDisplay(displayUpdater):
     display.clear()
-    display.set_brightness(0)
-
-    timeText = strftime("%H%M")
-
-    if time_needs_sync():
-        display.set_decimal(pos % 4, True)
-    else:
-        display.print_str(timeText)
-        display.set_decimal(1, pos % 2)
-
+    displayUpdater(display)
     display.write_display()
 
-    pos += 1
+while True:
     time.sleep(1)
 
 GPIO.cleanup()           # clean up GPIO on normal exit
