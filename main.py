@@ -30,7 +30,7 @@ buttonPressSubject = Subject()
 
 GPIO.add_event_detect(25, GPIO.FALLING, callback=buttonPressSubject.on_next, bouncetime=500)
 
-buttonPressSubscription = buttonPressSubject.subscribe(lambda x: octoalert_pressed)
+buttonPressSubscription = buttonPressSubject.subscribe(lambda x: octoalert_pressed(x))
 
 import time
 from time import strftime
