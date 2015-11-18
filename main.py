@@ -39,6 +39,14 @@ def showClock(disp):
     disp.print_str(timeText)
     disp.set_decimal(1, int(time.time()) % 2)
 
+def showSyncAnim(disp):
+    disp.set_decimal(int(time.time()) % 4, True)
+
+clockDisplayStream =  ticks.map(lambda x: showClock)
+
+syncAnimStream = ticks.map(lambda x: showSyncAnim)
+
+truthfulClockStream = Observable.concat(syncAnimStream.take_while(time_needs_sync), clockDisplayStream)
 
 buttonPressSubject = Subject()
 
@@ -50,7 +58,7 @@ display = AlphaNum4.AlphaNum4()
 
 display.begin()
 
-displaySubscription = ticks.map(lambda x: showClock).subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
+displaySubscription = truthfulClockStream.subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
 
 def renderDisplay(displayUpdater):
     display.clear()
