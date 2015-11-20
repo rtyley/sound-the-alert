@@ -58,7 +58,7 @@ display = AlphaNum4.AlphaNum4()
 
 display.begin()
 
-displaySubscription = truthfulClockStream.subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
+displaySubscription = truthfulClockStream.throttle_first(100).subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
 
 def renderDisplay(displayUpdater):
     display.clear()
