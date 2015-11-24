@@ -61,9 +61,12 @@ display.begin()
 displaySubscription = truthfulClockStream.throttle_first(100).subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
 
 def renderDisplay(displayUpdater):
-    display.clear()
-    displayUpdater(display)
-    display.write_display()
+    try:
+        display.clear()
+        displayUpdater(display)
+        display.write_display()
+    except IOError as e:
+        print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
 while True:
     time.sleep(1)
