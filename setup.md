@@ -31,8 +31,7 @@ iface eth0 inet static
 https://help.ubuntu.com/community/SSH/OpenSSH/Configuring#Disable_Password_Authentication
 
 ```
-echo "PasswordAuthentication no" >> etc/ssh/sshd_config
-# grep "^PasswordAuthentication" etc/ssh/sshd_config
+# printf "PasswordAuthentication no\n" >> etc/ssh/sshd_config ; grep "^PasswordAuthentication" etc/ssh/sshd_config
 PasswordAuthentication no
 ```
 
