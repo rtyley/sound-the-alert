@@ -55,8 +55,8 @@ GPIO.add_event_detect(25, GPIO.FALLING, callback=buttonPressSubject.on_next, bou
 buttonPressSubscription = buttonPressSubject.subscribe(lambda x: octoalert_pressed(x))
 
 display = AlphaNum4.AlphaNum4()
-
 display.begin()
+display.set_brightness(0)
 
 displaySubscription = truthfulClockStream.throttle_first(100).subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
 
