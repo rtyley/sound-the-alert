@@ -16,11 +16,7 @@ import os.path
 
 GPIO.setmode(GPIO.BCM)
 
-# GPIO 23 set up as inputs, pulled up to avoid false detection.
-# Both ports are wired to connect to GND on button press.
-# Ie button press will connect GPIO port 25 to GND
-# So we'll be setting up falling edge detection
-GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # this will run in another thread when our events are detected
 def octoalert_pressed(channel):
@@ -50,20 +46,23 @@ truthfulClockStream = Observable.concat(syncAnimStream.take_while(lambda x : tim
 
 buttonPressSubject = Subject()
 
-GPIO.add_event_detect(25, GPIO.FALLING, callback=buttonPressSubject.on_next, bouncetime=500)
+GPIO.add_event_detect(26, GPIO.FALLING, callback=buttonPressSubject.on_next, bouncetime=500)
 
 buttonPressSubscription = buttonPressSubject.subscribe(lambda x: octoalert_pressed(x))
 
 display = AlphaNum4.AlphaNum4()
-
 display.begin()
+display.set_brightness(0)
 
-displaySubscription = truthfulClockStream.subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
+displaySubscription = truthfulClockStream.throttle_first(100).subscribe(lambda displayUpdater: renderDisplay(displayUpdater))
 
 def renderDisplay(displayUpdater):
-    display.clear()
-    displayUpdater(display)
-    display.write_display()
+    try:
+        display.clear()
+        displayUpdater(display)
+        display.write_display()
+    except IOError as e:
+        print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
 while True:
     time.sleep(1)
