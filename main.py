@@ -31,7 +31,7 @@ def time_needs_sync():
 ticks = Observable.interval(100)
 
 def showClock(disp):
-    timeText = strftime("%I%M")
+    timeText = strftime("%I%M").lstrip("0").rjust(4)
     disp.print_str(timeText)
     disp.set_decimal(1, int(time.time()) % 2)
 
