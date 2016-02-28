@@ -7,10 +7,12 @@ $ mount | grep mmc
 $ sudo -i
 $ cd /media/roberto/ec2aa3d2-eee7-454e-8260-d145df5ddcba
 
-# printf "octoalert-3\n" > etc/hostname ; cat etc/hostname
+# devname=octoalert-3
+
+# printf "$devname\n" > etc/hostname ; cat etc/hostname
 octoalert-3
 
-# sed -i s/raspberrypi/octoalert-3/g etc/hosts ; cat etc/hosts
+# sed -i s/raspberrypi/$devname/g etc/hosts ; cat etc/hosts
 127.0.0.1	localhost
 ::1		localhost ip6-localhost ip6-loopback
 ff02::1		ip6-allnodes
