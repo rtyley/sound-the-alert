@@ -39,7 +39,7 @@ PasswordAuthentication no
 
 ## Non-root setup
 
-Enable SSH by creating a `/boot/ssh/` file (see http://raspberrypi.stackexchange.com/a/62456/6462 and https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/ ):
+Enable SSH by creating a `/boot/ssh` file (see http://raspberrypi.stackexchange.com/a/62456/6462 and https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/ ):
 
 ```
 $ touch /media/roberto/boot1
