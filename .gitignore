@@ -1,6 +1,6 @@
 .idea
 *.iml
-wpa_supplicant.networks.conf
+wpa_supplicant.conf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

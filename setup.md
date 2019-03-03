@@ -1,3 +1,7 @@
+## Flashing the sdcard
+
+dd bs=4M if=/home/roberto/Downloads/20yy-mm-dd-raspbian-stretch-lite.img of=/dev/mmcblk0 conv=fsync
+
 ## Root setup
 
 ```
@@ -23,9 +27,6 @@ ff02::2		ip6-allrouters
 $ grep "iface eth0" -A2 etc/network/interfaces
 iface eth0 inet static
         address 169.254.0.103/24
-
-
-# cat ~roberto/development/sound-the-alert/wpa_supplicant.networks.conf >> etc/wpa_supplicant/wpa_supplicant.conf ; cat etc/wpa_supplicant/wpa_supplicant.conf
 ```
 
 #### Disable SSH Password_Authentication
@@ -38,6 +39,15 @@ PasswordAuthentication no
 ```
 
 ## Non-root setup
+
+Enable WiFi:
+
+See also https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
+
+```
+$ cp ~roberto/development/sound-the-alert/wpa_supplicant.conf /media/roberto/boot/
+```
+
 
 Enable SSH by creating a `/boot/ssh` file (see http://raspberrypi.stackexchange.com/a/62456/6462 and https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/ ):
 
