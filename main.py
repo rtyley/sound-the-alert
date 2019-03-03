@@ -26,7 +26,7 @@ def octoalert_pressed(channel):
 # raw_input("Press Enter when ready\n>")
 
 def time_needs_sync():
-    return subprocess.check_output(['ntpq', '-c', 'rv 0 reftime']).startswith('reftime=0000')
+    return 'NTP synchronized: yes' not in subprocess.check_output(['timedatectl', 'status'])
 
 ticks = Observable.interval(100)
 
